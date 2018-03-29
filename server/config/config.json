@@ -1,0 +1,9 @@
+{
+  "development": {
+    "username": "alvin",
+    "password": null,
+    "database": "nodejs-woo",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}

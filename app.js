@@ -1,20 +1,33 @@
-var express = require('express');
-var app = express();
+const express = require('express');
+const logger = require('morgan');
+const bodyParser = require('body-parser');
+
+const dbConfig = require('./server/config/config');
+const app = express();
 
 
-app.get('/', (req, res) => {
-  res.send('hello home');
-});
+// Log request to console
+app.use(logger('dev'));
 
-app.get('/index.html', (req, res) => {
-  res.sendFile(__dirname + '/index.html')
-});
 
-app.all('/secret', (req, res, next) => {
-  console.log('secret route found ...');
-  next();
-}, (req, res) => {
-  res.send('Suprise!')
-});
+// Check database
+const models = require('./server/models');
+models.sequelize.sync()
+  .then(() => console.log('Database looks fine'))
+  .catch((err) => console.error('ERROR on database connection: ', err))
 
-app.listen(3000, () => console.log('Listening on port 3000'));
+
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
+// parse requests of content-type - application/json
+app.use(bodyParser.json());
+
+
+// load routes
+require('./server/routes')(app);
+app.get('*', (req, res) => res.status(200).send({
+  message: 'Welcome to the beginning...'
+}));
+
+
+module.exports = app;
