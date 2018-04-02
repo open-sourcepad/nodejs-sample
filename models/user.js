@@ -58,18 +58,14 @@ module.exports = (sequelize, DataTypes) => {
   };
 
 
-  // FIXME: toJSON() is not working
-  //        {this} is empty, not returning attributes
-  Model.prototype.toWeb = () => {
-    //const attr = this.dataValues;
-    //const asd = this
-    //debugPrint(asd);
+  Model.prototype.toWeb = function(){
+    const attr = this.dataValues;
 
     return {
-      //id: attr.id,
-      //username: attr.username,
-      //createAt: attr.createAt,
-      //updatedAt: attr.updatedAt
+      id: attr.id,
+      username: attr.username,
+      createAt: attr.createAt,
+      updatedAt: attr.updatedAt
     };
   };
 
