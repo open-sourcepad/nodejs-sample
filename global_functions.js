@@ -24,7 +24,7 @@ errorResp = (res, err, code) => {
 
   if (typeof code !== 'undefined') res.statusCode = code;
 
-  return res.json({ success: false, error: err });
+  return res.send({ success: false, error: err });
 }
 
 successResp = (res, data, code) => {
@@ -33,7 +33,16 @@ successResp = (res, data, code) => {
   if (typeof data == 'object') json = Object.assign(data, json); // merge
   if (typeof code !== 'undefined') res.statusCode = code;
 
-  return res.json(json)
+  return res.send(json)
+};
+
+
+debugPrint = (obj) => {
+  console.log('=========DEBUG PRINT=========');
+  for (let key in obj) {
+    console.log(key, ' -> ', obj[key]);
+  }
+  console.log('========/DEBUG PRINT=========');
 };
 
 

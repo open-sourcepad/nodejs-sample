@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
       [err, hash] = await to(bcrypt.hash(obj.password, salt));
       if (err) throwError(err.message, true);
 
-      user.password = hash;
+      obj.password = hash;
     }
   });
 
@@ -54,12 +54,23 @@ module.exports = (sequelize, DataTypes) => {
 
   Model.prototype.getJWT = () => {
     let expTime =  CONFIG.jwt.expiration >> 0;
-    return "Bearer " + jwt.sign({ user_id: this.id });
+    return 'Bearer ' + jwt.sign({user_id: this.id}, CONFIG.jwt.encryption, {expiresIn: expTime});
   };
 
 
-  Model.prototype.toWeb = (pw) => {
-    this.toJson();
+  // FIXME: toJSON() is not working
+  //        {this} is empty, not returning attributes
+  Model.prototype.toWeb = () => {
+    //const attr = this.dataValues;
+    //const asd = this
+    //debugPrint(asd);
+
+    return {
+      //id: attr.id,
+      //username: attr.username,
+      //createAt: attr.createAt,
+      //updatedAt: attr.updatedAt
+    };
   };
 
 

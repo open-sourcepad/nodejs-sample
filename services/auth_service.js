@@ -13,9 +13,7 @@ const createUser = async (userInfo) => {
   let key = getUniqueKeyFromBody(userInfo);
   if (!key) throwError('Username must be provided');
 
-  let authInfo = { status: 'create', method: 'username' };
   let err, user;
-
   [err, user] = await to(User.create(userInfo));
   if (err) errorResp('Username is already taken');
 
@@ -33,7 +31,6 @@ const authUser = async (userInfo) => {
   if (!userInfo.password) throwError('Provide password to login');
 
   [err, user] = await to(User.findOne({ where: {username: key} }));
-  console.log(err, user, key);
 
   if (err) throwError(err.message);
   if(!user) throwError('Invalid credentials');

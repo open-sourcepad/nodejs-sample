@@ -8,6 +8,8 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 
+// load routes
+const v1 = require('./routes/v1');
 
 const app = express();
 
@@ -28,11 +30,6 @@ if (CONFIG.app === 'dev') {
 }
 
 
-// load routes
-const v1 = require('./routes/v1');
-app.use('/v1', v1);
-
-
 // parse requests params
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -50,7 +47,7 @@ app.use((req, res, next) => {
 });
 
 app.use(passport.initialize());
-
+app.use('/v1', v1);
 
 app.use('/', (req,res) => {
   res.status(200).send({
@@ -78,6 +75,7 @@ app.use((err, req, res, next) => {
   //res.status(err.status || 590);
   //res.render('error');
 });
+
 
 
 module.exports = app;
