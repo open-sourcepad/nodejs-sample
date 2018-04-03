@@ -4,7 +4,8 @@
   "description": "Learning nodejs and related tech",
   "main": "app.js",
   "scripts": {
-    "dev": "nodemon ./bin/www"
+    "dev": "nodemon ./bin/www",
+    "debug": "nodemon --inspect ./bin/www"
   },
   "author": "",
   "license": "ISC",
